@@ -34,7 +34,7 @@ async def results(request):
                         else:
                             state_totals[state_code] = 1
                     if val["label"] == "Animal":
-                        animal = val["rule_value"].lower()
+                        animal = val["category"]["base"].lower()
                         if animal in animal_totals:
                             animal_totals[animal] += 1
                         else:
