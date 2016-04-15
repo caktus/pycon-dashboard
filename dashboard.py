@@ -27,14 +27,14 @@ async def results(request):
             result = await resp.json()
             for r in result["results"]:
                 for val in r["values"]:
-                    if val["category"]["base"] == "matches":
+                    if val["label"] == "state_code":
                         state_code = val["text"].lower()
                         if state_code in state_totals:
                             state_totals[state_code] += 1
                         else:
                             state_totals[state_code] = 1
                     if val["label"] == "Animal":
-                        animal = val["rule_value"].lower()
+                        animal = val["category"]["base"].lower()
                         if animal in animal_totals:
                             animal_totals[animal] += 1
                         else:
