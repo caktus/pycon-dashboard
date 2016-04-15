@@ -27,7 +27,7 @@ async def results(request):
             result = await resp.json()
             for r in result["results"]:
                 for val in r["values"]:
-                    if val["category"]["base"] == "matches":
+                    if val["label"] == "state_code":
                         state_code = val["text"].lower()
                         if state_code in state_totals:
                             state_totals[state_code] += 1
