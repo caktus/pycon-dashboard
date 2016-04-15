@@ -1,0 +1,37 @@
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script>
+var apiURL = 'http://rapidpro-erin.ngrok.io/api/v1/runs.json?flow=27';
+var apiToken = '82d96a8b2e083b38b07e31abd95f027f360faaa5';
+$(document).ready(function() {
+    $.ajax({
+        type: "GET",
+        url: apiURL,
+        dataType: 'json',
+        headers: {
+        "Authorization": "Token " + apiToken
+        }
+    }).then(function(data) {
+      // Loop through the xml results
+      for (i = 0; i < data.results.length; i++) {
+        if (data.results[i]["values"].length > 0) {
+          $("#results-states").append(data.results[i]["values"][0]["text"] + ", ");
+        }
+        if (data.results[i]["values"].length > 1) {
+          $("#results-animals").append(data.results[i]["values"][1]["category"]["eng"] + ", ");
+        }
+      }
+    });
+});
+
+</script>
+</head>
+<body>
+    <h3>States</h3>
+    <div id="results-states"></div>
+    <h3>Animals</h3>
+    <div id="results-animals"></div>
+</body>
+</html>
