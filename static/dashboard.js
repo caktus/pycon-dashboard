@@ -1,12 +1,49 @@
 (function() {
-  /* The code to make the Highcharts pie chart for animal-data */
-  var apiURL = '/results.json'
+  var apiURL = '/results.json';
+
   $(document).ready(function() {
       $.ajax({
           type: "GET",
           url: apiURL,
           dataType: 'json'
       }).then(function(data) {
+        /* The code to make the map */
+        // Initiate the chart
+        $('#container').highcharts('Map', {
+
+            title : {
+                text : ''
+            },
+
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom'
+                }
+            },
+
+            colorAxis: {
+               min: 0,
+               minColor: '#ffffff',
+               maxColor: '#8db25c'
+            },
+
+            series : [{
+                data : data["map-data"],
+                mapData: Highcharts.maps['countries/us/us-all'],
+                joinBy: 'hc-key',
+                name: 'Where did you come from?',
+                states: {
+                    hover: {
+                        color: '#147F89'
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                }
+            }]
+        });
 
         /* Make the highcharts pie chart for favorite animals */
         var animalsListOfObjects = data["animal-data"]
@@ -57,7 +94,6 @@
     });
   }
 
-  /* The code to make the Highcharts pie chart have a blck background */
   /**
    * Dark theme for Highcharts JS
    * @author Torstein Honsi
