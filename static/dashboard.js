@@ -18,6 +18,11 @@
             chart : {
                 backgroundColor: '#147F89'
             },
+            legend : {
+              itemStyle: {
+                color: '#ffffff'
+              }
+            },
 
             mapNavigation: {
                 enabled: true,
@@ -28,8 +33,8 @@
 
             colorAxis: {
                min: 0,
-               minColor: '#ffffff',
-               maxColor: '#8db25c'
+               minColor: '#D6E685',
+               maxColor: '#1E6823'
             },
 
             series : [{
@@ -76,10 +81,13 @@
         },
         colors: ['#8db25c', '#D6E685', '#1E6823', '#003236'],
         title: {
-            text: 'Cat and dog preferences'
+            text: ''
         },
         tooltip: {
-            pointFormat: '{series.name}: {point.y} (<b>{point.percentage:.1f}%</b>)'
+            pointFormat: '{point.name}: {point.y} (<b>{point.percentage:.1f}%</b>)',
+            style: {
+              fontSize: '1.5em'
+            }
         },
         plotOptions: {
             pie: {
@@ -93,7 +101,7 @@
                       fontSize: '2em',
                       textShadow: false
                     },
-                    color: 'white',
+                    color: '#ffffff'
                 }
             }
         },
