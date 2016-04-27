@@ -16,7 +16,10 @@ To run the project you'll need to include your RapidPro API token and the flow I
 in a ``.env`` file::
 
     echo "RAPIDPRO_API_TOKEN='XXXXXXX'" >> .env
-    echo "RAPIDPRO_FLOW_ID='1234576'" >> .env
+
+If you need to overwrite the flow ID for your rapidpro flow, you can run this setting too, but this THIS STEP IS NOT REQUIRED::
+
+    echo "RAPIDPRO_FLOW_ID='XXXXXX'" >> .env
 
 This assumes that the poll is hosted on ``app.rapidpro.io`` by default. If you need to change the RapidPro domain then you can optionally set the ``RAPIDPRO_API_BASE`` as well::
 
