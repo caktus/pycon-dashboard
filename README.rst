@@ -18,8 +18,7 @@ in a ``.env`` file::
     echo "RAPIDPRO_API_TOKEN='XXXXXXX'" >> .env
     echo "RAPIDPRO_FLOW_ID='1234576'" >> .env
 
-This assumes that the poll is hosted on ``textit.in`` by default. If you need to change the RapidPro
-domain then you can optionally set the ``RAPIDPRO_API_BASE`` as well::
+This assumes that the poll is hosted on ``app.rapidpro.io`` by default. If you need to change the RapidPro domain then you can optionally set the ``RAPIDPRO_API_BASE`` as well::
 
     echo "RAPIDPRO_API_BASE='https://rapidpro.example.com/api/v1'" >> .env
 
