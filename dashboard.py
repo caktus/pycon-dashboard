@@ -48,9 +48,9 @@ async def results(request):
 
 
 app = web.Application()
-app['RAPIDPRO_API_BASE'] = config('RAPIDPRO_API_BASE', default='https://textit.in/api/v1')
+app['RAPIDPRO_API_BASE'] = config('RAPIDPRO_API_BASE', default='https://app.rapidpro.io/api/v1')
 app['RAPIDPRO_API_TOKEN'] = config('RAPIDPRO_API_TOKEN')
-app['RAPIDPRO_FLOW_ID'] = config('RAPIDPRO_FLOW_ID', default='51432')
+app['RAPIDPRO_FLOW_ID'] = config('RAPIDPRO_FLOW_ID', default='24188')
 app.router.add_route('GET', '/', index)
 app.router.add_route('GET', '/results.json', results)
 app.router.add_static('/static', os.path.join(BASE_DIR, 'static'))
