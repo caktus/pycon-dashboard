@@ -39,7 +39,7 @@
 
             series : [{
                 data : data["map-data"],
-                mapData: Highcharts.maps['countries/us/us-all'],
+                mapData: Highcharts.maps['custom/usa-and-canada'],
                 joinBy: 'hc-key',
                 name: 'Where did you come from?',
                 states: {
