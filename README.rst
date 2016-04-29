@@ -12,12 +12,12 @@ This requires Python 3.5 and the additional requirements are listed in the ``req
     mkvirtualenv rapidpro-dashboard -p `which python3.5`
     pip install -r requirements.txt
 
-To run the project you'll need to include your RapidPro API token and the flow ID you want to render
+To run the project you'll need to include your RapidPro API token you want to render
 in a ``.env`` file::
 
     echo "RAPIDPRO_API_TOKEN='XXXXXXX'" >> .env
 
-If you need to overwrite the flow ID for your rapidpro flow, you can run this setting too, but this THIS STEP IS NOT REQUIRED::
+If you need to overwrite the flow ID for your RapidPro flow, you can include this setting too, but this THIS STEP IS NOT REQUIRED::
 
     echo "RAPIDPRO_FLOW_ID='XXXXXX'" >> .env
 
