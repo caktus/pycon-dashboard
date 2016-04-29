@@ -22,6 +22,7 @@ async def results(request):
     headers = {'Authorization': 'Token {RAPIDPRO_API_TOKEN}'.format(**request.app)}
     state_totals = {}
     animal_totals = {}
+    droid_totals = {}
     with ClientSession() as session:
         async with session.get(url, params=params, headers=headers) as resp:
             result = await resp.json()
@@ -39,11 +40,19 @@ async def results(request):
                             animal_totals[animal] += 1
                         else:
                             animal_totals[animal] = 1
+                    if val["label"] == "Droid":
+                        droid = val["category"]["base"].lower()
+                        if droid in droid_totals:
+                            droid_totals[droid] += 1
+                        else:
+                            droid_totals[droid] = 1
 
             return web.json_response({"map-data":
                 [{"hc-key": "us-" + key, "value": value} for key, value in state_totals.items()],
                 "animal-data":
-                [{"name": key, "y": value} for key, value in animal_totals.items()]
+                [{"name": key, "y": value} for key, value in animal_totals.items()],
+                "droid-data":
+                [{"name": key, "y": value} for key, value in droid_totals.items()]
                 })
 
 
