@@ -3,6 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" ></meta>
 <link rel="stylesheet" type="text/css" href="/static/styles.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenMax.min.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
 
 <!-- Adding the pie chart for animals -->
 
@@ -15,11 +17,195 @@
 <script src="https://code.highcharts.com/mapdata/custom/usa-and-canada.js"></script>
 
 
-<script src="/static/dashboard.js"></script>
+<!-- <script src="/static/dashboard.js"></script> -->
+<style type="text/css">
+	body {
+	    font-family: helvetica;
+	    font-size: 18px;
+	    text-align: center;
+	    font-family: helvetica;
+	    color: white;
+	}
+	div#animals, div#androids {
+	    width: 50%;
+	    font-size: 18px;
+	    text-align: center;
+	    font-family: helvetica;
+	    color: white;
+	    /*background: cadetblue;*/
+	    float: left;
+	}
+	.dogCorner, .catCorner, .r2d2Corner, .bb8Corner {
+	    display: inline-block;
+	    width: 40%;
+	}
+	#animals img, #androids img {
+	    /*width: 60%;*/
+	    height: 21%;
+	}
+	img.cat {
+	    /*position: relative;*/
+	    /*top: 30px;*/
+	}
+	[attr*='.svg'] {
+		width: 200px;
+	}
+	.r2d2, .bb8 {
+		font-family: 'Righteous', cursive;
+		font-size: 20px;
+	}
+</style>
 </head>
 <body>
-    <div id="container"></div>
+    	<h2>Where Are You From?</h2>
+
+    <div id="container" data-env="local"></div>
     <!-- For the pie chart for animals -->
-    <div id="animal-pie" style="height:400px;"></div>
+    <!-- <div id="animal-pie" style="height:400px;"></div> -->
+    <div id="animals">
+    	<h2>Which Animal Do You Prefer?</h2>
+    	<div class="catCorner">
+		    <img class="cat" src="static/images/felix.svg"><div id="catCount"></div>
+	    </div>
+	    <div class="dogCorner">
+		    <img class="dog" src="static/images/dog.svg"><div id="dogCount"></div>
+	    </div>
+    </div>
+    <div id="androids">
+    	<h2>Which Android Do You Prefer?</h2>
+    	<div class="r2d2Corner">
+		    <!-- <img class="r2d2" src="static/images/r2d2.svg"><div id="r2d2Count"></div> -->
+		    <div class="r2d2"><h2>R2D2</h2><div id="r2d2Count"></div></div>
+	    </div>
+	    <div class="bb8Corner">
+		    <!-- <img class="bb8" src="static/images/bb82.png"><div id="bb8Count"></div> -->
+		    <div class="bb8"><h2>bb8</h2><div id="bb8Count"></div></div>
+	    </div>
+    </div>
+<script type="text/javascript">
+	(function(){
+		// vars
+		var endpoint = '/results.json';
+		var site;
+		var dogCount = 0, catCount = 0, otherAnimalCount = 0, r2d2Count = 0, bb8Count = 0; otherDroidCount = 0;
+
+		// Dashboard class
+		var Dashboard = {
+			init: function (url) {
+				_this = this;
+				$.ajax({
+					type: "GET",
+					url: site + endpoint,
+					dataType: 'json'
+				})
+					.then(function( json ) {
+						console.log( "JSON Data: ", json );
+						_this.updateAnimals(json);
+						_this.updateDroids(json);
+						_this.updateMap(json);
+					})
+					.fail(function( jqxhr, textStatus, error ) {
+						var err = textStatus + ", " + error;
+						console.log( "Request Failed: " + err );
+					});
+			},
+			updateMap: function (data) {
+				$('#container').highcharts('Map', {
+
+		            title : {
+		                text : ''
+		            },
+
+		            chart : {
+		                backgroundColor: '#147F89'
+		            },
+		            legend : {
+		              itemStyle: {
+		                color: '#ffffff'
+		              }
+		            },
+
+		            mapNavigation: {
+		                enabled: true,
+		                buttonOptions: {
+		                    verticalAlign: 'bottom'
+		                }
+		            },
+
+		            colorAxis: {
+		               min: 0,
+		               minColor: '#D6E685',
+		               maxColor: '#1E6823'
+		            },
+
+		            series : [{
+		                data : data["map-data"],
+		                mapData: Highcharts.maps['custom/usa-and-canada'],
+		                joinBy: 'hc-key',
+		                name: 'Where did you come from?',
+		                states: {
+		                    hover: {
+		                        color: '#8db25c'
+		                    }
+		                },
+		                dataLabels: {
+		                    enabled: true,
+		                    format: '{point.name}'
+		                }
+		            }]
+		        });
+			},
+			updateAnimals: function (data) {
+				var catData = data['animal-data'][0];
+				var dogData = data['animal-data'][1];
+				var otherAnimal = data['animal-data'][2];
+
+				catCount += catData.y;
+				dogCount += dogData.y;
+				otherAnimalCount += otherAnimal.y;
+				var ratio = catCount/dogCount;
+
+				console.log(catCount, dogCount, otherAnimalCount);
+
+				TweenMax.to($('img.cat'), 0.75, {scale: catCount*ratio*0.07, ease: Back.easeOut.config(1.7)})
+				TweenMax.to($('img.dog'), 0.75, {scale: dogCount*ratio*0.07, ease: Back.easeOut.config(1.7)})
+				$('#catCount').html(catCount);
+				$('#dogCount').html(dogCount);
+			},
+			updateDroids: function (data) {
+				var r2d2Data = data['droid-data'][0];
+				var bb8Data = data['droid-data'][1];
+				var otherDroid = data['droid-data'][2];
+
+				r2d2Count += r2d2Data.y;
+				bb8Count += bb8Data.y;
+				otherDroidCount += otherDroid.y;
+				var ratio = r2d2Count/bb8Count;
+
+				console.log(r2d2Count, bb8Count, otherDroidCount);
+
+				TweenMax.to($('.r2d2'), 0.75, {scale: r2d2Count*ratio*0.07, ease: Back.easeOut.config(1.7)})
+				TweenMax.to($('.bb8'), 0.75, {scale: bb8Count*ratio*0.07, ease: Back.easeOut.config(1.7)})
+				$('#r2d2Count').html(r2d2Count);
+				$('#bb8Count').html(bb8Count);
+			}
+		}
+		// setup
+		if ($('#container').data('env') === 'local') {
+			site = 'http://localhost:8080';
+			console.log('my environment is local');
+		}
+		if ($('#container').data('env') === 'staging') {
+			site = 'staging site';
+			console.log('my environment is staging');
+		}
+		if ($('#container').data('env') === 'production') {
+			site = 'production site';
+			console.log('my environment is production');
+		}
+		Dashboard.init(site);
+	})($)
+
+</script>
 </body>
 </html>
