@@ -1,4 +1,5 @@
 import os
+import pycountry
 
 from aiohttp import ClientSession, web
 from decouple import config
@@ -17,23 +18,30 @@ async def index(request):
 async def results(request):
     """Fetch remote results forward on."""
 
+    def _derive_mapping_code(response, mapped_totals):
+        """Consumes a list of dictionaries and returns a mapping of 2 char CC-SS (Country State)
+        keys and total submissions for each."""
+        values = response['values']
+        code = '{0}-{1}'.format([x['value'].lower() for x in values if x['label'] == 'country_code'][0], [x['value'].lower() for x in values if x['label'] == 'state_code'][0])  # noqa
+        if code in mapped_totals:
+            mapped_totals[code] += 1
+        else:
+            mapped_totals[code] = 1
+        return mapped_totals
+
     url = '{RAPIDPRO_API_BASE}/runs.json'.format(**request.app)
     params = {'flow': request.app['RAPIDPRO_FLOW_ID']}
     headers = {'Authorization': 'Token {RAPIDPRO_API_TOKEN}'.format(**request.app)}
-    state_totals = {}
+    mapped_totals = {}
+    country_totals = {}
     animal_totals = {}
     droid_totals = {}
     with ClientSession() as session:
         async with session.get(url, params=params, headers=headers) as resp:
             result = await resp.json()
             for r in result["results"]:
+                mapped_totals = _derive_mapping_code(r, mapped_totals)
                 for val in r["values"]:
-                    if val["label"] == "state_code":
-                        state_code = val["text"].lower()
-                        if state_code in state_totals:
-                            state_totals[state_code] += 1
-                        else:
-                            state_totals[state_code] = 1
                     if val["label"] == "Animal":
                         animal = val["category"]["base"].lower()
                         if animal in animal_totals:
@@ -46,20 +54,30 @@ async def results(request):
                             droid_totals[droid] += 1
                         else:
                             droid_totals[droid] = 1
-
+                    if val["label"] == "country_code":
+                        try:
+                            country =  pycountry.countries.get(alpha2=val["text"].upper()).name
+                        except KeyError:
+                            country = "Other"
+                        if country in country_totals:
+                            country_totals[country] += 1
+                        else:
+                            country_totals[country] = 1
             return web.json_response({"map-data":
-                [{"hc-key": "us-" + key, "value": value} for key, value in state_totals.items()],
+                [{"hc-key": key, "value": value} for key, value in mapped_totals.items()],
                 "animal-data":
                 [{"name": key, "y": value} for key, value in animal_totals.items()],
                 "droid-data":
-                [{"name": key, "y": value} for key, value in droid_totals.items()]
+                [{"name": key, "y": value} for key, value in droid_totals.items()],
+                "countries-data":
+                [{"name": key, "y": value} for key, value in country_totals.items()],
                 })
 
 
 app = web.Application()
 app['RAPIDPRO_API_BASE'] = config('RAPIDPRO_API_BASE', default='https://app.rapidpro.io/api/v1')
 app['RAPIDPRO_API_TOKEN'] = config('RAPIDPRO_API_TOKEN')
-app['RAPIDPRO_FLOW_ID'] = config('RAPIDPRO_FLOW_ID', default='24188')
+app['RAPIDPRO_FLOW_ID'] = config('RAPIDPRO_FLOW_ID', default='24388')
 app.router.add_route('GET', '/', index)
 app.router.add_route('GET', '/results.json', results)
 app.router.add_static('/static', os.path.join(BASE_DIR, 'static'))
