@@ -22,7 +22,10 @@ async def results(request):
         """Consumes a list of dictionaries and returns a mapping of 2 char CC-SS (Country State)
         keys and total submissions for each."""
         values = response['values']
-        code = '{0}-{1}'.format([x['value'].lower() for x in values if x['label'] == 'country_code'][0], [x['value'].lower() for x in values if x['label'] == 'state_code'][0])  # noqa
+        code = '{0}-{1}'.format(
+            [x['value'].lower() for x in values if x['label'] == 'country_code'][0],
+            [x['value'].lower() for x in values if x['label'] == 'state_code'][0]
+        )
         if code in mapped_totals:
             mapped_totals[code] += 1
         else:
