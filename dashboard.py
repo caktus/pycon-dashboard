@@ -74,12 +74,9 @@ async def results(request):
             return web.json_response(
                 {"map-data":
                     [{"hc-key": key, "value": value} for key, value in mapped_totals.items()],  # noqa
-                    "animal-data":
-                    [{"name": key, "y": value} for key, value in animal_totals.items()],  # noqa
-                    "droid-data":
-                    [{"name": key, "y": value} for key, value in droid_totals.items()],  # noqa
-                    "countries-data":
-                    [{"name": key, "y": value} for key, value in country_totals.items()],  # noqa
+                    "animal-data": animal_totals,
+                    "droid-data": droid_totals,
+                    "countries-data": country_totals
                 })
 
 
