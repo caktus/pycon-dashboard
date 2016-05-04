@@ -56,25 +56,37 @@
 
         /* Make the highcharts pie chart for favorite animals */
         var animalsListOfObjects = data["animal-data"]
-        // Add 'sliced': true and 'selected': true for each object (animal)
-        for (var i = 0; i < animalsListOfObjects.length; i++) {
-          animalsListOfObjects[i]['sliced'] = true;
-          animalsListOfObjects[i]['selected'] = true;
-        }
+        animalsData = prepHighChartsData(animalsListOfObjects);
+        makeHighchartsAnimalChart(animalsData);
 
         /* Make the highcharts bar chart for country */
         var countriesListOfObjects = data["countries-data"]
-        // Add 'sliced': true and 'selected': true for each object (animal)
-        for (var i = 0; i < countriesListOfObjects.length; i++) {
-          countriesListOfObjects[i]['sliced'] = true;
-          countriesListOfObjects[i]['selected'] = true;
-        }
-        // Make the Highcharts charts
-        makeHighchartsAnimalChart(animalsListOfObjects);
-        makeHighchartsCountriesChart(countriesListOfObjects);
+        countryData = prepHighChartsData(countriesListOfObjects);
+        makeHighchartsCountriesChart(countryData);
+
+        /* Make the highcharts viz for droids */
+        var droidsListOfObjects = data["droid-data"]
+        droidData = prepHighChartsData(droidsListOfObjects);
+        // TODO: Define the Droid chart
+        // makeHighchartsDroidsChart(droidData);
+
       });
   });
 
+  var prepHighChartsData = function(data) {
+      // Create Array from JSON
+      var prepped_data = [];
+      for (var key in data) {
+        prepped_data.push(
+            {
+             'sliced': true,
+             'selected': true,
+             'y': data[key],
+             'name': key
+            });
+      };
+      return prepped_data;
+  }
 
   var makeHighchartsAnimalChart = function(dataList) {
     // The highcharts part

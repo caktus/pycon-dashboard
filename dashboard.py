@@ -19,13 +19,13 @@ async def results(request):
     """Fetch remote results forward on."""
 
     def _derive_mapping_code(response, mapped_totals):
-        """Consumes a list of dictionaries and returns a mapping of 2 char CC-SS (Country State)
-        keys and total submissions for each."""
+        """Consumes a list of dictionaries and returns a mapping of 2 char
+        CC-SS (Country State) keys and total submissions for each."""
         values = response['values']
         try:
             code = '{0}-{1}'.format(
-                [x['value'].lower() for x in values if x['label'] == 'country_code'][0],
-                [x['value'].lower() for x in values if x['label'] == 'state_code'][0]
+                [x['value'].lower() for x in values if x['label'] == 'country_code'][0],  # noqa
+                [x['value'].lower() for x in values if x['label'] == 'state_code'][0]  # noqa
             )
             if code in mapped_totals:
                 mapped_totals[code] += 1
@@ -38,7 +38,7 @@ async def results(request):
 
     url = '{RAPIDPRO_API_BASE}/runs.json'.format(**request.app)
     params = {'flow': request.app['RAPIDPRO_FLOW_ID']}
-    headers = {'Authorization': 'Token {RAPIDPRO_API_TOKEN}'.format(**request.app)}
+    headers = {'Authorization': 'Token {RAPIDPRO_API_TOKEN}'.format(**request.app)}  # noqa
     mapped_totals = {}
     country_totals = {}
     animal_totals = {}
@@ -63,31 +63,31 @@ async def results(request):
                             droid_totals[droid] = 1
                     if val["label"] == "country_code":
                         try:
-                            country =  pycountry.countries.get(alpha2=val["text"].upper()).name
+                            country = pycountry.countries.get(
+                                alpha2=val["text"].upper()).name
                         except KeyError:
                             country = "Other"
                         if country in country_totals:
                             country_totals[country] += 1
                         else:
                             country_totals[country] = 1
-            return web.json_response({"map-data":
-                [{"hc-key": key, "value": value} for key, value in mapped_totals.items()],
-                "animal-data":
-                [{"name": key, "y": value} for key, value in animal_totals.items()],
-                "droid-data":
-                [{"name": key, "y": value} for key, value in droid_totals.items()],
-                "countries-data":
-                [{"name": key, "y": value} for key, value in country_totals.items()],
+            return web.json_response(
+                {"map-data":
+                    [{"hc-key": key, "value": value} for key, value in mapped_totals.items()],  # noqa
+                    "animal-data": animal_totals,
+                    "droid-data": droid_totals,
+                    "countries-data": country_totals
                 })
 
 
 app = web.Application()
-app['RAPIDPRO_API_BASE'] = config('RAPIDPRO_API_BASE', default='https://app.rapidpro.io/api/v1')
+app['RAPIDPRO_API_BASE'] = config('RAPIDPRO_API_BASE', default='https://app.rapidpro.io/api/v1')  # noqa
 app['RAPIDPRO_API_TOKEN'] = config('RAPIDPRO_API_TOKEN')
 app['RAPIDPRO_FLOW_ID'] = config('RAPIDPRO_FLOW_ID', default='24388')
 app.router.add_route('GET', '/', index)
 app.router.add_route('GET', '/results.json', results)
 app.router.add_static('/static', os.path.join(BASE_DIR, 'static'))
+
 
 def main(arg):
     return app
