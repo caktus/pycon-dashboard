@@ -32,7 +32,6 @@
 	    text-align: center;
 	    font-family: helvetica;
 	    color: white;
-	    /*background: cadetblue;*/
 	    float: left;
 	}
 	.dogCorner, .catCorner, .r2d2Corner, .bb8Corner {
@@ -40,7 +39,6 @@
 	    width: 40%;
 	}
 	#animals img, #androids img {
-	    /*width: 60%;*/
 	    height: 21%;
 	}
 	img.cat {
@@ -72,15 +70,15 @@
 	    </div>
     </div>
     <div id="androids">
-    	<h2>Which Android Do You Prefer?</h2>
-    	<div class="r2d2Corner">
+    	<!-- <h2>Which Android Do You Prefer?</h2> -->
+    	<!-- <div class="r2d2Corner"> -->
 		    <!-- <img class="r2d2" src="static/images/r2d2.svg"><div id="r2d2Count"></div> -->
-		    <div class="r2d2"><h2>R2D2</h2><div id="r2d2Count"></div></div>
-	    </div>
-	    <div class="bb8Corner">
+		    <!-- <div class="r2d2"><h2>R2D2</h2><div id="r2d2Count"></div></div> -->
+	    <!-- </div> -->
+	    <!-- <div class="bb8Corner"> -->
 		    <!-- <img class="bb8" src="static/images/bb82.png"><div id="bb8Count"></div> -->
-		    <div class="bb8"><h2>bb8</h2><div id="bb8Count"></div></div>
-	    </div>
+		    <!-- <div class="bb8"><h2>bb8</h2><div id="bb8Count"></div></div> -->
+	    <!-- </div> -->
     </div>
 <script type="text/javascript">
 	(function(){
@@ -89,26 +87,35 @@
 		var site;
 		var dogCount = 0, catCount = 0, otherAnimalCount = 0, r2d2Count = 0, bb8Count = 0; otherDroidCount = 0;
 
+		var curCatCount = 0, curDogCount = 0, curOtherAnimalCount = 0, curR2D2Count = 0, curBB8Count = 0, curOtherDroidCount = 0;
+        Highcharts.setOptions({
+            plotOptions: {
+                series: {
+                    animation: false
+                }
+            }
+        });
 		// Dashboard class
 		var Dashboard = {
-			init: function (url) {
-				_this = this;
-				$.ajax({
-					type: "GET",
-					url: site + endpoint,
-					dataType: 'json'
-				})
-					.then(function( json ) {
-						console.log( "JSON Data: ", json );
-						_this.updateAnimals(json);
-						_this.updateDroids(json);
-						_this.updateMap(json);
-					})
-					.fail(function( jqxhr, textStatus, error ) {
-						var err = textStatus + ", " + error;
-						console.log( "Request Failed: " + err );
-					});
-			},
+			// init: function (site) {
+			// 	_this = this;
+			// 	$.ajax({
+			// 		type: "GET",
+			// 		url: site + endpoint,
+			// 		dataType: 'json'
+			// 	})
+			// 		.then(function( json ) {
+			// 			console.log( "JSON Data: ", json );
+			// 			_this.updateAnimals(json);
+			// 			_this.updateDroids(json);
+			// 			_this.updateMap(json);
+			// 			// update the counts
+			// 		})
+			// 		.fail(function( jqxhr, textStatus, error ) {
+			// 			var err = textStatus + ", " + error;
+			// 			console.log( "Request Failed: " + err );
+			// 		});
+			// },
 			updateMap: function (data) {
 				$('#container').highcharts('Map', {
 
@@ -156,38 +163,158 @@
 		        });
 			},
 			updateAnimals: function (data) {
+				// this won't work because every time I reboot the server the order of the items is different
+				var dogData = data['animal-data'][2]; // need something like data['animal-data']['dogs']
 				var catData = data['animal-data'][0];
-				var dogData = data['animal-data'][1];
-				var otherAnimal = data['animal-data'][2];
+				var otherAnimalData = data['animal-data'][1];
 
-				catCount += catData.y;
-				dogCount += dogData.y;
-				otherAnimalCount += otherAnimal.y;
-				var ratio = catCount/dogCount;
+				// need variable to store old count and current count
 
-				console.log(catCount, dogCount, otherAnimalCount);
+				if (catData.y > curCatCount ) {
+					curCatCount = catData.y;
 
-				TweenMax.to($('img.cat'), 0.75, {scale: catCount*ratio*0.07, ease: Back.easeOut.config(1.7)})
-				TweenMax.to($('img.dog'), 0.75, {scale: dogCount*ratio*0.07, ease: Back.easeOut.config(1.7)})
-				$('#catCount').html(catCount);
-				$('#dogCount').html(dogCount);
+				}
+				if (dogData.y > curDogCount ) {
+					curDogCount = dogData.y;
+
+				}
+				if (otherAnimalData.y > curOtherAnimalCount ) {
+					curOtherAnimalCount = otherAnimalData.y;
+
+				}
+
+				var ratio = curCatCount/curDogCount;
+				console.log(curCatCount, curDogCount, curOtherAnimalCount);
+
+				TweenMax.to($('img.cat'), 0.75, {scale: curCatCount*ratio*0.07, ease: Back.easeOut.config(1.7)})
+				TweenMax.to($('img.dog'), 0.75, {scale: curDogCount*ratio*0.07, ease: Back.easeOut.config(1.7)})
+				$('#catCount').html(curCatCount);
+				$('#dogCount').html(curDogCount);
 			},
-			updateDroids: function (data) {
-				var r2d2Data = data['droid-data'][0];
-				var bb8Data = data['droid-data'][1];
-				var otherDroid = data['droid-data'][2];
+			// updateDroids: function (data) {
+			// 	var bb8Data = data['droid-data'][0];
+			// 	var r2d2Data = data['droid-data'][1];
+			// 	var otherDroid = data['droid-data'][2];
 
-				r2d2Count += r2d2Data.y;
-				bb8Count += bb8Data.y;
-				otherDroidCount += otherDroid.y;
-				var ratio = r2d2Count/bb8Count;
+			// 	r2d2Count += r2d2Data.y;
+			// 	bb8Count += bb8Data.y;
+			// 	otherDroidCount += otherDroid.y;
+			// 	var ratio = r2d2Count/bb8Count;
+			// 	console.log(r2d2Count, bb8Count, otherDroidCount);
 
-				console.log(r2d2Count, bb8Count, otherDroidCount);
+			// 	TweenMax.to($('.r2d2'), 0.75, {scale: r2d2Count*ratio*0.07, ease: Back.easeOut.config(1.7)})
+			// 	TweenMax.to($('.bb8'), 0.75, {scale: bb8Count*ratio*0.07, ease: Back.easeOut.config(1.7)})
+			// 	$('#r2d2Count').html(r2d2Count);
+			// 	$('#bb8Count').html(bb8Count);
+			// },
+            initDroidMap: function () {
+                $('#androids').highcharts({
+                    chart: {
+                        type: 'pie',
+                        options3d: {
+                            enabled: true,
+                            alpha: 45,
+                            beta: 0,
+                        }
+                    },
+                    title: {
+                        text: 'Which Droid Do you Prefer?'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            animation: false,
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            depth: 35,
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.name}'
+                            }
+                        }
+                    },
+                });
+            },
 
-				TweenMax.to($('.r2d2'), 0.75, {scale: r2d2Count*ratio*0.07, ease: Back.easeOut.config(1.7)})
-				TweenMax.to($('.bb8'), 0.75, {scale: bb8Count*ratio*0.07, ease: Back.easeOut.config(1.7)})
-				$('#r2d2Count').html(r2d2Count);
-				$('#bb8Count').html(bb8Count);
+            updateDroids: function (data) {
+                var r2d2Data = data['droid-data'][2];
+                var bb8Data = data['droid-data'][0];
+                var otherDroidData = data['droid-data'][1];
+
+                if (r2d2Data.y > curR2D2Count ) {
+                    curR2D2Count = r2d2Data.y;
+
+                }
+                if (bb8Data.y > curBB8Count ) {
+                    curBB8Count = bb8Data.y;
+
+                }
+                if (otherDroidData.y > curOtherDroidCount ) {
+                    curOtherDroidCount = otherDroidData.y;
+
+                }
+
+                var r2d2percentage = (curR2D2Count/(curR2D2Count+curBB8Count)) * 100;
+                var bb8percentage = (curBB8Count/(curR2D2Count+curBB8Count)) * 100;
+
+                $('#androids').highcharts({
+                    // chart: {
+                    //     type: 'pie',
+                    //     options3d: {
+                    //         enabled: true,
+                    //         alpha: 45,
+                    //         beta: 0
+                    //     }
+                    // },
+                    // title: {
+                    //     text: 'Which Droid Do you Prefer?'
+                    // },
+                    // tooltip: {
+                    //     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    // },
+                    // plotOptions: {
+                    //     pie: {
+                    //         allowPointSelect: true,
+                    //         cursor: 'pointer',
+                    //         depth: 35,
+                    //         dataLabels: {
+                    //             enabled: true,
+                    //             format: '{point.name}'
+                    //         }
+                    //     }
+                    // },
+                    series: [{
+                        type: 'pie',
+                        name: 'Android Preference',
+                        data: [
+                            ['R2D2', r2d2percentage],
+                            ['BB8', bb8percentage]
+                        ]
+                    }]
+                })
+            },
+			updateSelf: function () {
+				_this = this;
+				$.ajax({
+					type: "GET",
+					url: 'http://localhost:8080' + endpoint,
+					dataType: 'json'
+				})
+					.then(function( json ) {
+						console.log( "JSON Data: ", json );
+						Dashboard.updateAnimals(json);
+						Dashboard.updateDroids(json);
+						Dashboard.updateMap(json);
+						// update the counts
+					})
+					.fail(function( jqxhr, textStatus, error ) {
+						var err = textStatus + ", " + error;
+						console.log( "Request Failed: " + err );
+					});
+				window.setInterval(_this.updateSelf, 1500);
+				
 			}
 		}
 		// setup
@@ -203,7 +330,10 @@
 			site = 'production site';
 			console.log('my environment is production');
 		}
-		Dashboard.init(site);
+		// Dashboard.init(site);
+
+        Dashboard.initDroidMap();
+		Dashboard.updateSelf();
 	})($)
 
 </script>
