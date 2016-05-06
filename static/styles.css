@@ -51,6 +51,15 @@ table {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+@font-face {
+  font-family: 'caktusfont-light';
+  src: url('fonts/gt-walsheim-thin-web.woff') format('woff'),
+       url('fonts/gt-walsheim-thin-web.ttf')  format('truetype'); /* Safari, Android, iOS */
+}
+@font-face {
+  font-family: 'caktusfont-bold';
+  src: url('fonts/GT-Walsheim-Black.otf') format('opentype');
+}
 #container {
     height: 500px;
     min-width: 310px;
@@ -78,11 +87,14 @@ body {
     font-size: 70px;
     font-weight: bold;
     line-height: 100px;
+    font-family: 'caktusfont-bold';
 }
 h2 {
     color: white;
     text-align: center;
-    font-family: Helvetica;
+    font-family: 'caktusfont-light';
+    font-size: 30px;
+    line-height: 50px;
 }
 
 footer {
@@ -97,6 +109,11 @@ footer h2 {
 }
 [class*='container-'] {
     float: left;
+    padding: 20px;
+}
+[class*='container-']:last-of-type {
+    padding-right: 0;
+}
 }
 .container-75 {
     width: 75%;
