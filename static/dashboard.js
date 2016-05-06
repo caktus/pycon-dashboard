@@ -39,9 +39,9 @@
 
             series : [{
                 data : data["map-data"],
-                mapData: Highcharts.maps['custom/usa-and-canada'],
+                mapData: Highcharts.maps['custom/world-eckert3-highres'],
                 joinBy: 'hc-key',
-                name: 'Where did you come from?',
+                name: 'Where did you travel from?',
                 states: {
                     hover: {
                         color: '#8db25c'
@@ -54,22 +54,15 @@
             }]
         });
 
-        /* Make the highcharts pie chart for favorite animals */
-        var animalsListOfObjects = data["animal-data"]
-        animalsData = prepHighChartsData(animalsListOfObjects);
-        makeHighchartsAnimalChart(animalsData);
+        /* Make the highcharts pie chart for pony travel */
+        var ponyListOfObjects = data["pony-data"]
+        ponyData = prepHighChartsData(ponyListOfObjects);
+        makeHighchartsPonyChart(ponyData);
 
         /* Make the highcharts bar chart for country */
         var countriesListOfObjects = data["countries-data"]
         countryData = prepHighChartsData(countriesListOfObjects);
         makeHighchartsCountriesChart(countryData);
-
-        /* Make the highcharts viz for droids */
-        var droidsListOfObjects = data["droid-data"]
-        droidData = prepHighChartsData(droidsListOfObjects);
-        // TODO: Define the Droid chart
-        // makeHighchartsDroidsChart(droidData);
-
       });
   });
 
@@ -88,9 +81,9 @@
       return prepped_data;
   }
 
-  var makeHighchartsAnimalChart = function(dataList) {
+  var makeHighchartsPonyChart = function(dataList) {
     // The highcharts part
-    $('#animal-pie').highcharts({
+    $('#pony-pie').highcharts({
         chart: {
             type: 'pie',
             options3d: {
@@ -102,7 +95,7 @@
         },
         colors: ['#8db25c', '#D6E685', '#1E6823', '#003236'],
         title: {
-            text: ''
+            text: 'Did you travel in on a Django pony?'
         },
         tooltip: {
             pointFormat: '{point.name}: {point.y} (<b>{point.percentage:.1f}%</b>)',
