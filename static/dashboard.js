@@ -14,21 +14,27 @@
             title : {
                 text : ''
             },
+            credits: {
+                enabled: false
+            },
+            exporting: { 
+              enabled: false 
+            },
 
             chart : {
-                backgroundColor: '#147F89'
+                backgroundColor: '#ffffff'
             },
             legend : {
+              enabled: false,
               itemStyle: {
                 color: '#ffffff'
               }
             },
 
             mapNavigation: {
-                enabled: true,
-                buttonOptions: {
-                    verticalAlign: 'bottom'
-                }
+                enabled: false,
+                enableButtons: false
+                
             },
 
             colorAxis: {
@@ -93,6 +99,9 @@
             },
             backgroundColor: '#147F89'
         },
+        credits: {
+            enabled: false
+        },
         colors: ['#8db25c', '#D6E685', '#1E6823', '#003236'],
         title: {
             text: 'Did you travel in on a Django pony?'
@@ -133,6 +142,9 @@
         chart: {
             type: 'bar',
             backgroundColor: '#147F89'
+        },
+        credits: {
+            enabled: false
         },
         title: {
             text: 'What country did you travel from?'
