@@ -97,7 +97,7 @@
                 alpha: 55,
                 beta: 0
             },
-            backgroundColor: '#147F89'
+            backgroundColor: '#ffffff'
         },
         credits: {
             enabled: false
@@ -141,7 +141,7 @@
     $('#countries-bar').highcharts({
         chart: {
             type: 'bar',
-            backgroundColor: '#147F89'
+            backgroundColor: '#ffffff'
         },
         credits: {
             enabled: false

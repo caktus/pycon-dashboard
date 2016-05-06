@@ -1,3 +1,56 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
 #container {
     height: 500px;
     min-width: 310px;
@@ -11,5 +64,48 @@
 }
 
 body {
-  // background-color: #147F89;
+  background-color: #e7f0ee;
+  width: 1920px;
+}
+.title {
+    text-align: center;
+    font-family: Helvetica;
+    background-color: #147F89;
+    color: white;
+    height: 185px;
+}
+.title h1 {
+    font-size: 70px;
+    font-weight: bold;
+    line-height: 100px;
+}
+h2 {
+    color: white;
+    text-align: center;
+    font-family: Helvetica;
+}
+
+footer {
+    background: #98bd67;
+    text-align: center;
+    font-family: Hevetica;
+    height: 90px;
+}
+footer h2 {
+        background-color: #98ba6c;
+
+}
+[class*='container-'] {
+    float: left;
+}
+.container-75 {
+    width: 75%;
+}
+.container-25 {
+    width: 25%;
+}
+.grid:after {
+ content: "";
+  display: table;
+  clear: both;
 }
