@@ -61,9 +61,6 @@ table {
   src: url('fonts/GT-Walsheim-Black.otf') format('opentype');
 }
 #container {
-    // height: 500px;
-    // min-width: 310px;
-    // max-width: 800px;
     height:75%;
     width:100%;
     margin: 0 auto;
@@ -83,7 +80,7 @@ body {
     font-family: Helvetica;
     background-color: #147F89;
     color: white;
-    height: 151px;
+    height: 130px;
 }
 .title h1 {
     font-size: 50px;
@@ -138,7 +135,7 @@ footer h2 {
 }
 #pony-pie {
     margin-bottom: 20px;
-    background-color: pink;
+    // background-color: pink;
 }
 
 img.pony {
