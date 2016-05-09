@@ -22,7 +22,8 @@
             },
 
             chart : {
-                backgroundColor: '#ffffff'
+                backgroundColor: '#ffffff',
+                width: 1440
             },
             legend : {
               enabled: false,
