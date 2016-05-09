@@ -61,9 +61,11 @@ table {
   src: url('fonts/GT-Walsheim-Black.otf') format('opentype');
 }
 #container {
-    height: 500px;
-    min-width: 310px;
-    max-width: 800px;
+    // height: 500px;
+    // min-width: 310px;
+    // max-width: 800px;
+    height:75%;
+    width:100%;
     margin: 0 auto;
 }
 .loading {
@@ -137,6 +139,12 @@ footer h2 {
 #pony-pie {
     margin-bottom: 20px;
     background-color: pink;
+}
+
+img.pony {
+    position: absolute;
+    top: 247px;
+    right: 300px;
 }
 #countries-bar {
     background-color: pink;

@@ -28,7 +28,9 @@
         </div>
         <!-- For the pie chart for pony travel -->
         <div class="col-1-4">
-            <div id="pony-pie" style="height:400px;"></div>
+            <div id="pony-pie" style="height:400px;">
+            </div>
+            <img class="pony" src="static/images/pony.png">
             <div id="countries-bar" style="height:400px;">
                 <h2>I am coming from:</h2>
                 <p>TEST COUNTRY</p>
@@ -117,6 +119,7 @@
                             fontFamily: "caktusfont-bold"
                         }
                     },
+                    colors: ['#6c7a78', '#117f89', '#9ec16c'],
                     title: {
                         text: 'Did you travel on a Django pony?',
                         style: {
