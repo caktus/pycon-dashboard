@@ -85,7 +85,7 @@ body {
 .title h1 {
     font-size: 50px;
     font-weight: bold;
-    line-height: 80px;
+    line-height: 70px;
     font-family: 'caktusfont-bold';
 }
 h2 {
@@ -135,7 +135,6 @@ footer h2 {
 }
 #pony-pie {
     margin-bottom: 20px;
-    // background-color: pink;
 }
 .pony-wrapper {
     position: relative;
@@ -155,6 +154,14 @@ img.pony {
 }
 #countries-bar h2{
     font-family: 'caktusfont-bold';
-    font-style: 26px;
+    font-size: 26px;
     color: #117f89;
+}
+
+#countries-bar p {
+    font-family: 'caktusfont-light';
+    color: #98ba6c;
+    text-align: center;
+    margin-top: 50px;
+    font-size: 30px;
 }
