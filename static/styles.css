@@ -137,12 +137,24 @@ footer h2 {
     margin-bottom: 20px;
     // background-color: pink;
 }
-
+.pony-wrapper {
+    position: relative;
+}
 img.pony {
     position: absolute;
-    top: 247px;
-    right: 300px;
+    top: 80px;
+    right: 0;
+    z-index: 10;
+    left: 0;
+    margin: auto;
 }
 #countries-bar {
-    background-color: pink;
+    background-color: white;
+    height: 256px;
+    
+}
+#countries-bar h2{
+    font-family: 'caktusfont-bold';
+    font-style: 26px;
+    color: #117f89;
 }
