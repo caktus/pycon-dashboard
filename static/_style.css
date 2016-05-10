@@ -1,0 +1,276 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+@font-face {
+  font-family: 'caktusfont-light';
+  src: url('fonts/gt-walsheim-thin-web.woff') format('woff'),
+       url('fonts/gt-walsheim-thin-web.ttf')  format('truetype'); /* Safari, Android, iOS */
+}
+@font-face {
+  font-family: 'caktusfont-bold';
+  src: url('fonts/GT-Walsheim-Black.otf') format('opentype');
+}
+// #container {
+//     height:75%;
+//     width:100%;
+//     margin: 0 auto;
+// }
+// .loading {
+//     margin-top: 10em;
+//     text-align: center;
+//     color: gray;
+// }
+
+// body {
+//   background-color: #e7f0ee;
+//   width: 1920px;
+// }
+// .title {
+//     text-align: center;
+//     font-family: Helvetica;
+//     background-color: #147F89;
+//     color: white;
+//     height: 130px;
+// }
+// .title h1 {
+//     font-size: 50px;
+//     font-weight: bold;
+//     line-height: 70px;
+//     font-family: 'caktusfont-bold';
+// }
+// h2 {
+//     color: white;
+//     text-align: center;
+//     font-family: 'caktusfont-light';
+//     font-size: 30px;
+//     line-height: 50px;
+// }
+
+// footer {
+//     background: #98bd67;
+//     text-align: center;
+//     // font-family: Hevetica;
+//     height: 90px;
+//     position: relative;
+// }
+// footer h2 {
+//     background-color: #98ba6c;
+//     line-height: 90px;
+
+// }
+// img.footerLogo {
+//     position: absolute;
+//     left: 100px;
+//     top: 20px;
+// }
+// [class*='col-'] {
+//   float: left;
+//   padding-right: 20px;
+// }
+// }
+// [class*='col-']:last-of-type {
+//     padding-right: 0;
+// }
+
+// .col-3-4 {
+//     width: 75%;
+// }
+// .col-1-4 {
+//     width: 25%;
+// }
+// .grid-pad {
+//   padding: 20px 0 20px 20px;
+// }
+// .grid:after {
+//  content: "";
+//   display: table;
+//   clear: both;
+// }
+// .grid-pad > [class*='col-']:last-of-type {
+//   padding-right: 20px;
+// }
+// #pony-pie {
+//     margin-bottom: 20px;
+// }
+// .pony-wrapper {
+//     position: relative;
+// }
+// img.pony {
+//     position: absolute;
+//     top: 80px;
+//     right: 0;
+//     z-index: 10;
+//     left: 0;
+//     margin: auto;
+// }
+// #countries-bar {
+//     background-color: white;
+//     height: 256px;
+    
+// }
+// #countries-bar h2{
+//     font-family: 'caktusfont-bold';
+//     font-size: 26px;
+//     color: #117f89;
+// }
+
+// #countries-bar p {
+//     font-family: 'caktusfont-light';
+//     color: #98ba6c;
+//     text-align: center;
+//     margin-top: 50px;
+//     font-size: 30px;
+// }
+
+// .title, .flex-grid, footer {
+//   display: flex;
+// }
+body {
+  background-color: #e7f0ee;
+}
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+.title {
+  flex-grow: 3;
+  background-color: #147F89;
+  align-self: flex-start;
+  width: 100%;
+  color: white;
+  text-align: center;
+}
+.title h1 {
+  font-family: 'caktusfont-bold';
+}
+// .title h1 {
+//     text-align: center;
+//     font-size: 50px;
+//     font-weight: bold;
+//     line-height: 70px;
+//     font-family: 'caktusfont-bold';
+// }
+h2 {
+  font-family: 'caktusfont-light';
+}
+// h2 {
+//     color: white;
+//     text-align: center;
+//     font-family: 'caktusfont-light';
+//     font-size: 30px;
+//     // line-height: 50px;
+//     line-height: 75px;
+// }
+
+.contentWrap {
+  display: flex;
+  flex-direction: row;
+  margin: 15px;
+  // flex-grow: 3;
+}
+.col-3-4 {
+  background-color: white;
+  // flex-grow: 3;
+  width: 75%;
+}
+#container {
+    width: 100%;
+    height: 70%;
+    margin-top: 50px;
+}
+.col-1-4 {
+  // background-color: white;
+  flex-grow: 1;
+  margin-left: 15px;
+}
+.otherWrap {
+    display: flex;
+    flex-direction: column;
+}
+.pony-wrapper {
+  // height: 490px;
+  background-color: white;
+  position: relative;
+}
+#pony-pie {
+  height: 490px;
+}
+img.pony {
+    position: absolute;
+    top: 80px;
+    right: 0;
+    z-index: 10;
+    left: 0;
+    margin: auto;
+}
+#countries-bar {
+    height: 20%;
+    background: white;
+    margin-top: 15px;
+    // flex-grow: 3;
+}
+footer {
+  position: relative;
+  flex-grow: 1;
+  background-color: green;
+  align-self: flex-end;
+  width: 100%;
+  background-color: #98ba6c;
+}
+// img.footerLogo {
+//     position: absolute;
+//     left: 100px;
+//     top: 15px;
+// }
