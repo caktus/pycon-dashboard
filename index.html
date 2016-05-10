@@ -40,7 +40,7 @@
         </div>
     </div>
     <footer>
-        <div class="logo"></div>
+        <img class="footerLogo" src="static/images/caktussm.png">
         <h2>Talk to our team about powering your own high-volume mobile surveys with RapidPro</h2>
     </footer>
     <script type="text/javascript">
@@ -156,7 +156,7 @@
                 _this = this;
                 $.ajax({
                     type: "GET",
-                    url: 'http://localhost:8080' + endpoint,
+                    url: endpoint,
                     // url: 'https://31faed 3e.ngrok.io' + endpoint,
                     dataType: 'json'
                 })
