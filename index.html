@@ -23,7 +23,7 @@
     </div>
     </div>
     <div class="grid grid-pad">
-        <div class="button">click me</div>
+        <!-- <div class="button">click me</div> -->
         <div class="col-3-4">
             <div id="container" data-env="local"></div>
         </div>
@@ -133,8 +133,14 @@
                 });
                     
             },
+            highlightCountry: function (id) {
+                map.get(id).setState('hover'); 
+                setTimeout( function () { 
+                    map.get(id).setState(); 
+                }, 1000);
+            },
             updateSelf: function () {
-                _this = this;
+                // _this = this;
                 $.ajax({
                     type: "GET",
                     url: endpoint,
@@ -144,17 +150,12 @@
                     console.log( "JSON Data: ", json['recent-run'] );
                     if (storedID === json['recent-run']) {
                         console.log('the same!');
-                        console.log('map', map.get());
-                        map.get('br').setState('hover'); 
-                        setTimeout(function(){ removeHighlight('br') }, 1000);
                         // });
                     }
                     if (storedID !== json['recent-run']) {
-                        // update map, store new ID
                         storedID = json['recent-run'];
-                        console.log('not the same!');
-                        
-                        // storedID = json['recent-run'];
+                        Dashboard.highlightCountry(json['recent-country']);
+                        // update map
                         // Dashboard.drawMap(json);
                         // draw pony chart
                         // draw popular country
@@ -170,13 +171,15 @@
             },
             // use addSeries() to update our global map
             updateMap: function (data) {
-                    console.log('bla');
+                    // console.log('bla');
             }
             
 
         }
         Dashboard.init();
         Dashboard.updateSelf();
+
+
         function removeHighlight(state_id) {
             $('#container').highcharts().get(state_id).setState();
         }
