@@ -66,8 +66,10 @@ async def results(request):
                         else:
                             country_totals[country] = 1
                         if recent_run_id == 0:
-                            recent_country = country
-                            recent_run_id = r["run"]  # Run ID of the most recent run
+                            # 2 char code of the most recent country
+                            recent_country = val["text"].lower()
+                            # Run ID of the most recent run
+                            recent_run_id = r["run"]
             return web.json_response(
                 {"map-data":
                     [{"hc-key": key, "value": value, "id": key} for key, value in mapped_totals.items()],  # noqa
