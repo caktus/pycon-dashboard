@@ -23,7 +23,7 @@
     </div>
     </div>
     <div class="grid grid-pad">
-        <!-- <div class="button">click me</div> -->
+        <div class="button">click me</div>
         <div class="col-3-4">
             <div id="container" data-env="local"></div>
         </div>
@@ -75,6 +75,7 @@
                     chart : {
                         backgroundColor: '#ffffff'
                     },
+
                     legend : {
                       enabled: false,
                       itemStyle: {
@@ -125,8 +126,6 @@
                     Dashboard.drawMap(json);
                     Dashboard.update3dPonyPie(json);
                     Dashboard.updatePopularCountry(json);
-                    // draw pony chart
-                    // draw popular country
                 })
                 .fail(function( jqxhr, textStatus, error ) {
                     var err = textStatus + ", " + error;
@@ -215,12 +214,10 @@
         Dashboard.init();
         Dashboard.updateSelf();
 
-        // $('.button').on('click', function () {
-        //     console.log('trying to add series');
-        //     map.addSeries({
-        //         // data: {value: 1, id: "jp", hc-key: "jp"}
-        //     });
-        // });
+        $('.button').on('click', function () {
+            console.log('trying to add series');
+            console.dir( map.get('us').setState('hover'));
+        });
     })($)
     </script>
 </body>

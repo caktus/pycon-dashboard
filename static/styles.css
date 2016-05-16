@@ -175,13 +175,13 @@ img.pony {
     margin-top: 50px;
     font-size: 30px;
 }
-// .button {
-//     background-color: red;
-//     width: 150px;
-//     height: 30px;
-//     border: 1px solid #fff;
-//     position: absolute;
-//     top: 43px;
-//     left: 50px;
-//     cursor: pointer;
-// }
+.button {
+    background-color: red;
+    width: 150px;
+    height: 30px;
+    border: 1px solid #fff;
+    position: absolute;
+    top: 43px;
+    left: 50px;
+    cursor: pointer;
+}
