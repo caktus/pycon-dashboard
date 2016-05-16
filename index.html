@@ -45,10 +45,10 @@
     </footer>
     <script type="text/javascript">
     (function(){
-        // vars
+        // Global Vars
         var endpoint = '/results.json';
-        var site;
-        
+        var map, storedID;
+
         Highcharts.setOptions({
             plotOptions: {
                 series: {
@@ -59,9 +59,10 @@
                 enabled: false
             }
         });
+
         // Dashboard class
         var Dashboard = {
-            updateMap: function (data) {
+            drawMap: function (data) {
                 $('#container').highcharts('Map', {
                     title : {
                         text : ''
@@ -108,90 +109,70 @@
                         }
                     }]
                 });
+                map = $('#container').highcharts();
             },
-            update3dPonyPie: function (data) {
-                $('#pony-pie').highcharts({
-                    chart: {
-                        type: 'pie',
-                        options3d: {
-                            enabled: true,
-                            alpha: 45
-                        },
-                        style: {
-                            fontFamily: "caktusfont-bold"
-                        }
-                    },
-                    colors: ['#6c7a78', '#117f89', '#9ec16c'],
-                    title: {
-                        text: 'Did you travel on a Django pony?',
-                        style: {
-                            fontSize: '26px',
-                            color: '#117f89'
-                        }
-                    },
-                    plotOptions: {
-                        pie: {
-                            innerSize: 100,
-                            depth: 45
-                        }
-                    },
-                    series: [{
-                        name: 'Did you travel on a Django pony?',
-                        data: [
-                            ['No', data['pony-data']['no']],
-                            ['Yes', data['pony-data']['yes']],
-                            ['I Wish!', data['pony-data']['wish']]
-                        ]
-                    }]
+            init: function () {
+                // Load our Maps, Charts, and set our storedID data
+                $.ajax({
+                    type: "GET",
+                    url: endpoint,
+                    dataType: 'json'
+                })
+                .then(function( json ) {
+                    console.log( "JSON Data: ", json['recent-run'] );
+                    storedID = json['recent-run'];
+                    Dashboard.drawMap(json);
+                    // draw pony chart
+                    // draw popular country
+                })
+                .fail(function( jqxhr, textStatus, error ) {
+                    var err = textStatus + ", " + error;
+                    console.log( "Request Failed: " + err );
+                    // show some sort of error page
                 });
-            },
-            updatePopularCountry: function (data) {
-                var country_data = data['countries-data'];
-                sorted = Object.keys(country_data).sort(function(a,b){return country_data[a]-country_data[b]})
-                // console.log(sorted.pop());
-                var popularCountry = sorted.pop();
-                $("#countries-bar p").html(popularCountry);
+                    
             },
             updateSelf: function () {
                 _this = this;
                 $.ajax({
                     type: "GET",
                     url: endpoint,
-                    // url: 'https://31faed 3e.ngrok.io' + endpoint,
                     dataType: 'json'
                 })
-                    .then(function( json ) {
-                        console.log( "JSON Data: ", json );
-                        Dashboard.updateMap(json);
-                        Dashboard.update3dPonyPie(json);
-                        Dashboard.updatePopularCountry(json);
-                    })
-                    .fail(function( jqxhr, textStatus, error ) {
-                        var err = textStatus + ", " + error;
-                        console.log( "Request Failed: " + err );
-                        // show fake test page
-                    });
+                .then(function( json ) {
+                    console.log( "JSON Data: ", json['recent-run'] );
+                    if (storedID === json['recent-run']) {
+                        console.log('the same!');
+                    }
+                    if (storedID !== json['recent-run']) {
+                        // update map, store new ID
+                        storedID = json['recent-run'];
+                        console.log('not the same!');
+                        // storedID = json['recent-run'];
+                        // Dashboard.drawMap(json);
+                        // draw pony chart
+                        // draw popular country
+                    }
+                    
+                })
+                .fail(function( jqxhr, textStatus, error ) {
+                    var err = textStatus + ", " + error;
+                    console.log( "Request Failed: " + err );
+                    // show some sort of error page
+                });
                 window.setInterval(_this.updateSelf, 1500);
-                
+            },
+            // use addSeries() to update our global map
+            updateMap: function (data) {
+                    console.log('bla');
             }
-        }
-        // setup
-        if ($('#container').data('env') === 'local') {
-            site = 'http://localhost:8080';
-            console.log('my environment is local');
-        }
-        if ($('#container').data('env') === 'staging') {
-            site = 'staging site';
-            console.log('my environment is staging');
-        }
-        if ($('#container').data('env') === 'production') {
-            site = 'production site';
-            console.log('my environment is production');
-        }
+            
 
+        }
+        Dashboard.init();
         Dashboard.updateSelf();
     })($)
 
-</script>
+    </script>
 </body>
 </html>

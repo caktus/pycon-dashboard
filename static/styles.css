@@ -100,18 +100,21 @@ footer {
     background: #98bd67;
     text-align: center;
     // font-family: Hevetica;
-    height: 90px;
+    // height: 90px;
+    height: 100px;
     position: relative;
 }
 footer h2 {
     background-color: #98ba6c;
-    line-height: 90px;
+    // line-height: 90px;
+    line-height: 100px;
 
 }
 img.footerLogo {
     position: absolute;
     left: 100px;
-    top: 20px;
+    top: 30px;
+    // top: 20px;
 }
 [class*='col-'] {
   float: left;
@@ -155,7 +158,8 @@ img.pony {
 }
 #countries-bar {
     background-color: white;
-    height: 256px;
+    // height: 256px;
+    height: 239px;
     
 }
 #countries-bar h2{
@@ -165,7 +169,7 @@ img.pony {
 }
 
 #countries-bar p {
-    font-family: 'caktusfont-light';
+    font-family: 'caktusfont-bold';
     color: #98ba6c;
     text-align: center;
     margin-top: 50px;
