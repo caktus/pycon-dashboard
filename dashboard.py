@@ -70,7 +70,7 @@ async def results(request):
                             recent_run_id = r["run"]  # Run ID of the most recent run
             return web.json_response(
                 {"map-data":
-                    [{"hc-key": key, "value": value} for key, value in mapped_totals.items()],  # noqa
+                    [{"hc-key": key, "value": value, "id": key} for key, value in mapped_totals.items()],  # noqa
                     "pony-data": pony_totals,
                     "countries-data": country_totals,
                     "recent-country": recent_country,
