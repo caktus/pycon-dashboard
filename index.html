@@ -123,6 +123,8 @@
                     console.log( "JSON Data: ", json );
                     storedID = json['recent-run'];
                     Dashboard.drawMap(json);
+                    Dashboard.update3dPonyPie(json);
+                    Dashboard.updatePopularCountry(json);
                     // draw pony chart
                     // draw popular country
                 })
@@ -139,26 +141,66 @@
                     map.get(id).setState(); 
                 }, 1000);
             },
+            update3dPonyPie: function (data) {
+                $('#pony-pie').highcharts({
+                    chart: {
+                        type: 'pie',
+                        options3d: {
+                            enabled: true,
+                            alpha: 45
+                        },
+                        style: {
+                            fontFamily: "caktusfont-bold"
+                        }
+                    },
+                    colors: ['#6c7a78', '#117f89', '#9ec16c'],
+                    title: {
+                        text: 'Did you travel on a Django pony?',
+                        style: {
+                            fontSize: '26px',
+                            color: '#117f89'
+                        }
+                    },
+                    plotOptions: {
+                        pie: {
+                            innerSize: 100,
+                            depth: 45
+                        }
+                    },
+                    series: [{
+                        name: 'Did you travel on a Django pony?',
+                        data: [
+                            ['No', data['pony-data']['no']],
+                            ['Yes', data['pony-data']['yes']],
+                            ['I Wish!', data['pony-data']['wish']]
+                        ]
+                    }]
+                });
+            },
+            updatePopularCountry: function (data) {
+                var country_data = data['countries-data'];
+                sorted = Object.keys(country_data).sort(function(a,b){return country_data[a]-country_data[b]})
+                var popularCountry = sorted.pop();
+                $("#countries-bar p").html(popularCountry);
+            },
             updateSelf: function () {
-                // _this = this;
+                _this = this;
                 $.ajax({
                     type: "GET",
                     url: endpoint,
                     dataType: 'json'
                 })
                 .then(function( json ) {
-                    console.log( "JSON Data: ", json['recent-run'] );
+                    Dashboard.update3dPonyPie(json);
+                    Dashboard.updatePopularCountry(json);
+
                     if (storedID === json['recent-run']) {
                         console.log('the same!');
-                        // });
                     }
                     if (storedID !== json['recent-run']) {
                         storedID = json['recent-run'];
+                        Dashboard.drawMap(json);
                         Dashboard.highlightCountry(json['recent-country']);
-                        // update map
-                        // Dashboard.drawMap(json);
-                        // draw pony chart
-                        // draw popular country
                     }
                     
                 })
@@ -169,30 +211,17 @@
                 });
                 window.setInterval(_this.updateSelf, 1500);
             },
-            // use addSeries() to update our global map
-            updateMap: function (data) {
-                    // console.log('bla');
-            }
-            
-
         }
         Dashboard.init();
         Dashboard.updateSelf();
 
-
-        function removeHighlight(state_id) {
-            $('#container').highcharts().get(state_id).setState();
-        }
-        $('.button').on('click', function () {
-            // map.series[0].update({
-            //     data: {'hc-key': "br", 'value': 100}
-            // });
-            map.get('br').setState('hover'); 
-                setTimeout(function(){ removeHighlight('br') }, 1000);
-            });
-
+        // $('.button').on('click', function () {
+        //     console.log('trying to add series');
+        //     map.addSeries({
+        //         // data: {value: 1, id: "jp", hc-key: "jp"}
+        //     });
+        // });
     })($)
-
     </script>
 </body>
 </html>
