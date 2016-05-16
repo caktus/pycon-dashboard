@@ -23,6 +23,7 @@
     </div>
     </div>
     <div class="grid grid-pad">
+        <div class="button">click me</div>
         <div class="col-3-4">
             <div id="container" data-env="local"></div>
         </div>
@@ -100,7 +101,7 @@
                         name: 'Where did you travel from?',
                         states: {
                             hover: {
-                                color: '#8db25c'
+                                color: '#147F89'
                             }
                         },
                         dataLabels: {
@@ -119,7 +120,7 @@
                     dataType: 'json'
                 })
                 .then(function( json ) {
-                    console.log( "JSON Data: ", json['recent-run'] );
+                    console.log( "JSON Data: ", json );
                     storedID = json['recent-run'];
                     Dashboard.drawMap(json);
                     // draw pony chart
@@ -143,11 +144,16 @@
                     console.log( "JSON Data: ", json['recent-run'] );
                     if (storedID === json['recent-run']) {
                         console.log('the same!');
+                        console.log('map', map.get());
+                        map.get('br').setState('hover'); 
+                        setTimeout(function(){ removeHighlight('br') }, 1000);
+                        // });
                     }
                     if (storedID !== json['recent-run']) {
                         // update map, store new ID
                         storedID = json['recent-run'];
                         console.log('not the same!');
+                        
                         // storedID = json['recent-run'];
                         // Dashboard.drawMap(json);
                         // draw pony chart
@@ -171,6 +177,17 @@
         }
         Dashboard.init();
         Dashboard.updateSelf();
+        function removeHighlight(state_id) {
+            $('#container').highcharts().get(state_id).setState();
+        }
+        $('.button').on('click', function () {
+            // map.series[0].update({
+            //     data: {'hc-key': "br", 'value': 100}
+            // });
+            map.get('br').setState('hover'); 
+                setTimeout(function(){ removeHighlight('br') }, 1000);
+            });
+
     })($)
 
     </script>
