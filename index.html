@@ -23,7 +23,6 @@
     </div>
     </div>
     <div class="grid grid-pad">
-        <div class="button">click me</div>
         <div class="col-3-4">
             <div id="container" data-env="local"></div>
         </div>
@@ -194,7 +193,8 @@
                     Dashboard.updatePopularCountry(json);
 
                     if (storedID === json['recent-run']) {
-                        console.log('the same!');
+                        // console.log('the same!');
+                        return false;
                     }
                     if (storedID !== json['recent-run']) {
                         storedID = json['recent-run'];
@@ -213,11 +213,6 @@
         }
         Dashboard.init();
         Dashboard.updateSelf();
-
-        $('.button').on('click', function () {
-            console.log('trying to add series');
-            console.dir( map.get('us').setState('hover'));
-        });
     })($)
     </script>
 </body>
