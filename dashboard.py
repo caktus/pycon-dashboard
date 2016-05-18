@@ -67,7 +67,8 @@ async def results(request):
                             country_totals[country] = 1
                         if recent_run_id == 0:
                             # 2 char code of the most recent country
-                            recent_country = val["text"].lower()
+                            # recent_country = val["text"].lower()
+                            recent_country = [country.lower(), val["text"].lower()]
                             # Run ID of the most recent run
                             recent_run_id = r["run"]
             return web.json_response(

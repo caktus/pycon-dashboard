@@ -134,9 +134,10 @@
                     
             },
             highlightCountry: function (id) {
-                map.get(id).setState('hover'); 
+                $('path.highcharts-name-' + id[0] + '.highcharts-key-' + id[1]).css('transition', 'fill 1000ms ease');
+                map.get(id[1]).setState('hover'); 
                 setTimeout( function () { 
-                    map.get(id).setState(); 
+                    map.get(id[1]).setState(); 
                 }, 1000);
             },
             update3dPonyPie: function (data) {
