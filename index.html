@@ -137,7 +137,6 @@
                 if (id[0] === 'united states') {
                     id[0] = 'united-states.of.america'
                 }
-                console.log($('path.highcharts-name-' + id[0] + '.highcharts-key-' + id[1]));
                 $('path.highcharts-name-' + id[0] + '.highcharts-key-' + id[1]).css('transition', 'fill 1000ms ease');
                 map.get(id[1]).setState('hover'); 
                 setTimeout( function () { 
