@@ -12,14 +12,213 @@
 <!-- Highmaps map libraries-->
 <script src="https://code.highcharts.com/maps/modules/map.js"></script>
 <script src="https://code.highcharts.com/mapdata/custom/world-eckert3-highres.js"></script>
-
-
-<script src="/static/dashboard.js"></script>
 </head>
 <body>
-    <div id="container"></div>
-    <!-- For the pie chart for pony travel -->
-    <div id="pony-pie" style="height:400px;"></div>
-    <div id="countries-bar" style="height:400px;"></div>
+    <div class="title">
+        <h1>Where did you travel from?</h1>
+        <h2>Text #12345 to take survey or Tweet #TakeSurvey</h2>
+    </div>
+    </div>
+    <div class="grid grid-pad">
+        <div class="col-3-4">
+            <div id="container" data-env="local"></div>
+        </div>
+        <!-- For the pie chart for pony travel -->
+        <div class="col-1-4">
+            <div class="pony-wrapper">
+                <img class="pony" src="static/images/pony.png">
+                <div id="pony-pie" style="height:550px;">
+            </div>
+            </div>
+            <div id="countries-bar">
+                <h2>Most people are traveling from:</h2>
+                <p></p>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <img class="footerLogo" src="static/images/caktussm.png">
+        <h2>Talk to our team about powering your own high-volume mobile surveys with RapidPro</h2>
+    </footer>
+    <script type="text/javascript">
+    (function(){
+        // Global Vars
+        var endpoint = '/results.json';
+        var map, storedID;
+
+        Highcharts.setOptions({
+            plotOptions: {
+                series: {
+                    animation: false
+                }
+            },
+            credits: {
+                enabled: false
+            }
+        });
+
+        // Dashboard class
+        var Dashboard = {
+            drawMap: function (data) {
+                $('#container').highcharts('Map', {
+                    title : {
+                        text : ''
+                    },
+                    exporting: { 
+                      enabled: false 
+                    },
+
+                    chart : {
+                        backgroundColor: '#ffffff'
+                    },
+
+                    legend : {
+                      enabled: false,
+                      itemStyle: {
+                        color: '#ffffff'
+                      }
+                    },
+
+                    mapNavigation: {
+                        enabled: false,
+                        enableButtons: false
+                        
+                    },
+
+                    colorAxis: {
+                       min: 0,
+                       minColor: '#D6E685',
+                       maxColor: '#1E6823'
+                    },
+
+                    series : [{
+                        data : data["map-data"],
+                        mapData: Highcharts.maps['custom/world-eckert3-highres'],
+                        joinBy: 'hc-key',
+                        name: 'Where did you travel from?',
+                        states: {
+                            hover: {
+                                color: '#147F89'
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}'
+                        }
+                    }]
+                });
+                map = $('#container').highcharts();
+            },
+            init: function () {
+                // Load our Maps, Charts, and set our storedID data
+                $.ajax({
+                    type: "GET",
+                    url: endpoint,
+                    dataType: 'json'
+                })
+                .then(function( json ) {
+                    console.log( "JSON Data: ", json );
+                    storedID = json['recent-run'];
+                    Dashboard.drawMap(json);
+                    Dashboard.update3dPonyPie(json);
+                    Dashboard.updatePopularCountry(json);
+                })
+                .fail(function( jqxhr, textStatus, error ) {
+                    var err = textStatus + ", " + error;
+                    console.log( "Request Failed: " + err );
+                    // show some sort of error page
+                });
+                    
+            },
+            highlightCountry: function (id) {
+                if (id[0] === 'united states') {
+                    id[0] = 'united-states.of.america'
+                }
+                if (id[0] === 'russian federation') {
+                    id[0] = 'russia'
+                }
+                console.log('selected country target ', $('path.highcharts-name-' + id[0] + '.highcharts-key-' + id[1]));
+                $('path.highcharts-name-' + id[0] + '.highcharts-key-' + id[1]).css('transition', 'fill 1000ms ease');
+                map.get(id[1]).setState('hover'); 
+                setTimeout( function () { 
+                    map.get(id[1]).setState(); 
+                }, 3000);
+            },
+            update3dPonyPie: function (data) {
+                $('#pony-pie').highcharts({
+                    chart: {
+                        type: 'pie',
+                        options3d: {
+                            enabled: true,
+                            alpha: 45
+                        },
+                        style: {
+                            fontFamily: "caktusfont-bold"
+                        }
+                    },
+                    colors: ['#6c7a78', '#117f89', '#9ec16c'],
+                    title: {
+                        text: 'Did you travel on a Django pony?',
+                        style: {
+                            fontSize: '26px',
+                            color: '#117f89'
+                        }
+                    },
+                    plotOptions: {
+                        pie: {
+                            innerSize: 100,
+                            depth: 45
+                        }
+                    },
+                    series: [{
+                        name: 'Did you travel on a Django pony?',
+                        data: [
+                            ['No', data['pony-data']['no']],
+                            ['Yes', data['pony-data']['yes']],
+                            ['I Wish!', data['pony-data']['wish']]
+                        ]
+                    }]
+                });
+            },
+            updatePopularCountry: function (data) {
+                var country_data = data['countries-data'];
+                sorted = Object.keys(country_data).sort(function(a,b){return country_data[a]-country_data[b]})
+                var popularCountry = sorted.pop();
+                $("#countries-bar p").html(popularCountry);
+            },
+            updateSelf: function () {
+                _this = this;
+                $.ajax({
+                    type: "GET",
+                    url: endpoint,
+                    dataType: 'json'
+                })
+                .then(function( json ) {
+                    Dashboard.update3dPonyPie(json);
+                    Dashboard.updatePopularCountry(json);
+
+                    if (storedID === json['recent-run']) {
+                        // console.log('the same!');
+                        return false;
+                    }
+                    if (storedID !== json['recent-run']) {
+                        storedID = json['recent-run'];
+                        Dashboard.drawMap(json);
+                        Dashboard.highlightCountry(json['recent-country']);
+                    }
+                    
+                })
+                .fail(function( jqxhr, textStatus, error ) {
+                    var err = textStatus + ", " + error;
+                    console.log( "Request Failed: " + err );
+                    // show some sort of error page
+                });
+                window.setInterval(_this.updateSelf, 1500);
+            },
+        }
+        Dashboard.init();
+        Dashboard.updateSelf();
+    })($)
+    </script>
 </body>
 </html>

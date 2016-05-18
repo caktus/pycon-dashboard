@@ -41,6 +41,8 @@ async def results(request):
     mapped_totals = {}
     country_totals = {}
     pony_totals = {}
+    recent_country = ""
+    recent_run_id = 0
     with ClientSession() as session:
         async with session.get(url, params=params, headers=headers) as resp:
             result = await resp.json()
@@ -63,11 +65,19 @@ async def results(request):
                             country_totals[country] += 1
                         else:
                             country_totals[country] = 1
+                        if recent_run_id == 0:
+                            # 2 char code of the most recent country
+                            # recent_country = val["text"].lower()
+                            recent_country = [country.lower(), val["text"].lower()]
+                            # Run ID of the most recent run
+                            recent_run_id = r["run"]
             return web.json_response(
                 {"map-data":
-                    [{"hc-key": key, "value": value} for key, value in mapped_totals.items()],  # noqa
+                    [{"hc-key": key, "value": value, "id": key} for key, value in mapped_totals.items()],  # noqa
                     "pony-data": pony_totals,
-                    "countries-data": country_totals
+                    "countries-data": country_totals,
+                    "recent-country": recent_country,
+                    "recent-run": recent_run_id
                 })
 
 
