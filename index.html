@@ -134,11 +134,15 @@
                 if (id[0] === 'united states') {
                     id[0] = 'united-states.of.america'
                 }
+                if (id[0] === 'russian federation') {
+                    id[0] = 'russia'
+                }
+                console.log('selected country target ', $('path.highcharts-name-' + id[0] + '.highcharts-key-' + id[1]));
                 $('path.highcharts-name-' + id[0] + '.highcharts-key-' + id[1]).css('transition', 'fill 1000ms ease');
                 map.get(id[1]).setState('hover'); 
                 setTimeout( function () { 
                     map.get(id[1]).setState(); 
-                }, 1000);
+                }, 3000);
             },
             update3dPonyPie: function (data) {
                 $('#pony-pie').highcharts({
