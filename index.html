@@ -15,8 +15,8 @@
 </head>
 <body>
     <div class="title">
-        <h1>Where did you travel from?</h1>
-        <h2>Text "pycon" to (919) 296-0943 or DM @caktusgroup</h2>
+        <h1>PyCon Live Map</h1>
+        <h2>Tap the screen to see responses from PyCon attendees.</h2>
     </div>
     </div>
     <div class="grid grid-pad">
@@ -117,7 +117,6 @@
                     dataType: 'json'
                 })
                 .then(function( json ) {
-                    console.log( "JSON Data: ", json );
                     storedID = json['recent-run'];
                     Dashboard.drawMap(json);
                     Dashboard.update3dPonyPie(json);
@@ -137,7 +136,6 @@
                 if (id[0] === 'russian federation') {
                     id[0] = 'russia'
                 }
-                console.log('selected country target ', $('path.highcharts-name-' + id[0] + '.highcharts-key-' + id[1]));
                 $('path.highcharts-name-' + id[0] + '.highcharts-key-' + id[1]).css('transition', 'fill 1000ms ease');
                 map.get(id[1]).setState('hover'); 
                 setTimeout( function () { 
@@ -198,7 +196,6 @@
                     Dashboard.updatePopularCountry(json);
 
                     if (storedID === json['recent-run']) {
-                        // console.log('the same!');
                         return false;
                     }
                     if (storedID !== json['recent-run']) {
